@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'io.github.prashant-ramcharan', name: 'courgette-jvm', version: '6.10.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.3.0'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.13.0'
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.14.0'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.14.0'
+    implementation group: 'io.cucumber', name: 'cucumber-picocontainer', version: '7.14.0'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.4'
+}
+
+test {
+    jvmArgs '--enable-preview'
+    //useJUnitPlatform()
+    useJUnit()
+}
+
+tasks.withType(Test) {
+    systemProperties = System.getProperties()
+    systemProperties.remove("java.endorsed.dirs")
+}
+
+task runScenariosUsingJUnit(type: Test) {
+    include '**/runners/ParallelRunner.class'
+    outputs.upToDateWhen { false }
+}
